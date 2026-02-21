@@ -20,7 +20,7 @@ def run():
 def keep_alive():
     t = Thread(target=run)
     t.start()
-    
+
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
@@ -70,17 +70,21 @@ EPIC_QUOTES = [
     "May the gods have mercy. The boss awakens in 60 minutes."
 ]
 
+
 @tasks.loop(minutes=10)
 async def check_boss_time():
     berlin_tz = pytz.timezone('Europe/Berlin')
     now = datetime.datetime.now(berlin_tz)
     
     if now.hour in [6, 14, 22] and now.minute < 10:
+        
         channel_id = 1472338412613795891
+        role_id = 1472335046244307190
+        
         channel = bot.get_channel(channel_id)
         if channel:
             quote = random.choice(EPIC_QUOTES)
-            await channel.send(f"⚔️ **BOSS ALERT:** {quote}")
+            await channel.send(f"⚔️ <@&{role_id}> **BOSS ALERT:** {quote}")
 
 @bot.event
 async def on_ready():
@@ -94,4 +98,4 @@ if __name__ == "__main__":
     if token:
         bot.run(token)
     else:
-        print("❌ Kein Token gefunden!")
+        print("❌ FEHLER: DISCORD_TOKEN nicht in Render-Umgebungsvariablen gefunden!")
