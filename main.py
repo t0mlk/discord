@@ -1,14 +1,11 @@
 import discord
-from discord.ext 
-import commands, tasks
+from discord.ext import commands, tasks
 import random
 import os
 import datetime
 import pytz
-from flask 
-import Flask
-from threading 
-import Thread
+from flask import Flask
+from threading import Thread
 
 app = Flask('')
 
@@ -23,7 +20,7 @@ def run():
 def keep_alive():
     t = Thread(target=run)
     t.start()
-
+    
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
@@ -87,16 +84,14 @@ async def check_boss_time():
 
 @bot.event
 async def on_ready():
-    print(f'✅ Bot ist online als {bot.user.name}')
+    print(f'✅ Bot eingeloggt als {bot.user.name}')
     if not check_boss_time.is_running():
         check_boss_time.start()
 
 if __name__ == "__main__":
     keep_alive()
-    
     token = os.getenv('DISCORD_TOKEN')
-    
     if token:
         bot.run(token)
     else:
-        print("❌ FEHLER: Kein DISCORD_TOKEN bei Render gefunden!")
+        print("❌ Kein Token gefunden!")
